@@ -1,6 +1,7 @@
 package javase01.t02;
 
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Formatter;
 
 public class Task2 {
@@ -26,12 +27,12 @@ public class Task2 {
     }
 
     //writes results in output stream
-    public static void getResultingString(double value, OutputStream os) {
+    public static void getResultingString(double value, PrintStream ps) {
         int n = searchOfLeastNumber(value);
         if (n < 1) {
             return;
         }
-        Formatter f = new Formatter(os);
+        Formatter f = new Formatter(ps);
         f.format("Initial value is %.2e. Result is %d.\n", value, n);
         int k = 10;
         //output as table
