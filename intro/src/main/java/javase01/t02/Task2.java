@@ -1,7 +1,5 @@
 package javase01.t02;
 
-import javase01.t03.RangeException;
-
 import java.io.OutputStream;
 import java.util.Formatter;
 
@@ -12,7 +10,9 @@ public class Task2 {
         //минимальное условие подобрано, исходя из максимального результата выражения Math.pow(n + 1, 2),
         //при котором точность не теряется, т. е. для double это Double.MAX_VALUE/1E293 (15 значущих цифр)
         final double MIN_CONDITION = 5.562684646268004E-16;
-        if (value < MIN_CONDITION) throw new RangeException();
+        if (value < MIN_CONDITION) {
+            throw new AccurateException();
+        }
         if (value > 0.25) {
             return 1;
         }
@@ -25,15 +25,21 @@ public class Task2 {
         return n;
     }
 
-    //writes resulting string in PrintStream
+    //writes results in output stream
     public static void getResultingString(double value, OutputStream os) {
         int n = searchOfLeastNumber(value);
-        if (n < 1) return;
+        if (n < 1) {
+            return;
+        }
         Formatter f = new Formatter(os);
         f.format("Initial value is %.2e. Result is %d.\n", value, n);
         int k = 10;
+        //output as table
         for (int i = 1; i < n + 1; i += 10) {
-            if (n - i < 10) k = n - i + 1;
+            //for output last line
+            if (n - i < 10) {
+                k = n - i + 1;
+            }
             for (int j = i; j < i + k; j++) {
                 f.format(" %7d", j);
             }
