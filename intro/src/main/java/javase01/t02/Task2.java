@@ -1,6 +1,5 @@
 package javase01.t02;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Formatter;
 
