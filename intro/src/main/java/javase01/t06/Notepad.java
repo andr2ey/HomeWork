@@ -7,7 +7,6 @@ import java.util.Formatter;
  * The Notepad allow to add, edit and delete notes by number and
  * display all notes in console. This class implements a growable
  * array of notes.
- *
  */
 public class Notepad {
 
@@ -155,7 +154,5 @@ public class Notepad {
         System.out.println("ADD 1 note");
         notepad.addNote("note 1");
         notepad.watchNotes();
-
-
     }
 }

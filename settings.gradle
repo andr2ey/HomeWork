@@ -1,4 +1,5 @@
 rootProject.name = 'HomeWork'
 
-include 'intro',
+include 'algorithm',
+        'intro',
         'oop'
