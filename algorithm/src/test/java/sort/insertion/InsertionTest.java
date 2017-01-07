@@ -8,7 +8,7 @@ import static org.hamcrest.core.Is.*;
 /**
  * Created by Andrey on 29.12.2016.
  */
-public class MyInsertionTest {
+public class InsertionTest {
     int[] a1 = {};
     int[] a1Result = {};
 
@@ -25,30 +25,16 @@ public class MyInsertionTest {
     int[] a5Result = {1, 2, 2, 2, 4, 5, 34, 34};
 
     @Test
-    public void verifiesMyInsertionSortOfIntArrays() {
-        MyInsertion.mySort(a1);
-        assertsThatArraysAreTheSame(a1, a1Result);
-        MyInsertion.mySort(a2);
-        assertsThatArraysAreTheSame(a2, a2Result);
-        MyInsertion.mySort(a3);
-        assertsThatArraysAreTheSame(a3, a3Result);
-        MyInsertion.mySort(a4);
-        assertsThatArraysAreTheSame(a4, a4Result);
-        MyInsertion.mySort(a5);
-        assertsThatArraysAreTheSame(a5, a5Result);
-    }
-
-    @Test
     public void verifiesInsertionSortOfIntArrays() {
-        MyInsertion.sort(a1);
+        Insertion.sort(a1);
         assertsThatArraysAreTheSame(a1, a1Result);
-        MyInsertion.sort(a2);
+        Insertion.sort(a2);
         assertsThatArraysAreTheSame(a2, a2Result);
-        MyInsertion.sort(a3);
+        Insertion.sort(a3);
         assertsThatArraysAreTheSame(a3, a3Result);
-        MyInsertion.sort(a4);
+        Insertion.sort(a4);
         assertsThatArraysAreTheSame(a4, a4Result);
-        MyInsertion.sort(a5);
+        Insertion.sort(a5);
         assertsThatArraysAreTheSame(a5, a5Result);
     }
 
