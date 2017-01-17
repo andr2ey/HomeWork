@@ -1,6 +1,4 @@
-package sort.buble;
-
-import java.util.Arrays;
+package sort.bubble;
 
 /**
  * Created by Andrey on 29.12.2016.

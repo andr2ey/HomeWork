@@ -1,7 +1,6 @@
-package sort.buble;
+package sort.bubble;
 
 import org.junit.Test;
-import sort.insertion.Insertion;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
