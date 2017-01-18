@@ -1,54 +1,63 @@
 package t02;
 
-import t02.goods.OfficeGood;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import t02.goods.Good;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created on 18.01.2017.
  */
-public class Workplace {
-    private static int counter = 1;
-    private int id = counter++;
-    private List<OfficeGood> officeGoods;
+public class Workplace implements Accountable<Good>{
+
+    private static int counterId = 1;
+    private int id = counterId++;
+    private Map<Good, Integer> goods;
 
     public Workplace() {
-        this.id = id;
-        officeGoods = new ArrayList<>();
+        goods = new TreeMap<>();
     }
 
-    public void addGood(OfficeGood good) {
-        officeGoods.add(good);
+    public void addGood(Good good) {
+        if (goods.containsKey(good)) {
+            int number = goods.get(good);
+            goods.put(good, ++number);
+        } else {
+            goods.put(good, 1);
+        }
     }
 
-    public void addGood(int position, OfficeGood good) {
-        officeGoods.add(position - 1, good);
-    }
-
-    public void deleteGood(OfficeGood good) {
-        officeGoods.remove(good);
-    }
-
-    public void deleteGood(int position) {
-        officeGoods.remove(position);
+    public void deleteGood(Good good) {
+        goods.remove(good);
     }
 
     public void clear() {
-        officeGoods.clear();
+        goods.clear();
     }
 
-    public double costsOfGoods() {
-        double totalPrice = 0;
-        for(OfficeGood good : officeGoods) {
-            totalPrice += good.getPrice();
+
+    @Override
+    public double totalCost() {
+        double totalCost = 0;
+        for(Map.Entry<Good, Integer> entry : goods.entrySet()) {
+            totalCost += entry.getKey().getPrice() * entry.getValue();
         }
-        return totalPrice;
+        return totalCost;
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("");
-        return sb.toString();
+    public int itemsNumber() {
+        int counter = 0;
+        for (Map.Entry<Good, Integer> entry : goods.entrySet()) {
+            counter += entry.getValue();
+        }
+        return counter;
+    }
+
+    @Override
+    public Map<Good, Integer> goods() {
+        return goods;
     }
 }
