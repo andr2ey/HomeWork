@@ -33,6 +33,7 @@ public class Task2 {
         }
         Formatter f = new Formatter(ps);
         f.format("Initial value is %.2e. Result is %d.\n", value, n);
+        //amount numbers in a line
         int k = 10;
         //output as table
         for (int i = 1; i < n + 1; i += 10) {

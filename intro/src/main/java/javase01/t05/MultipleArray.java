@@ -5,20 +5,15 @@ import java.util.Formatter;
 
 public class MultipleArray {
 
-    public static int[][] matrixWithMainDiagonals1(int n) {
-        if (n < 0) {
+    public static int[][] matrixWithMainDiagonals1(int size) {
+        if (size < 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        int[][] a = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                //filling 1 diagonal
-                if (i == j) {
-                    a[i][j] = 1;
-                }
-                //filling 2 diagonal
-                int iK = (n - 1) - i;
-                if (iK == j) {
+        int[][] a = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                int iK = (size - 1) - i; //for filling 2 diagonal
+                if ((i == j) || (iK == j)) {
                     a[i][j] = 1;
                 }
             }

@@ -17,7 +17,7 @@ public class Task4 {
         return algorithm(array);
     }
 
-    public static double algorithm(double[] array) {
+    private static double algorithm(double[] array) {
         double maxValue = Double.MIN_VALUE;
         double currentValue = 0;
         int N = array.length;

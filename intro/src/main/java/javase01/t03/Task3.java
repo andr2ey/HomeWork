@@ -25,12 +25,12 @@ public class Task3 {
         if (start > finish || step <= 0) {
             throw new RangeException();
         }
-        Map<Double, Double> mapArgumentValue = new TreeMap<>();
+        Map<Double, Double> mapArgVal = new TreeMap<>();
         for (double i = start; i < finish; i += step) {
-            mapArgumentValue.put(i, function(i));
+            mapArgVal.put(i, function(i));
         }
-        mapArgumentValue.put(finish, function(finish));
-        return mapArgumentValue;
+        mapArgVal.put(finish, function(finish));
+        return mapArgVal;
     }
 
     public static double function(double x) {
