@@ -7,15 +7,17 @@ public class OfficeGood implements Comparable<OfficeGood>, Good{
     private double price;
     private String name;
 
-    public OfficeGood(double price, String firm) {
+    public OfficeGood(double price, String name) {
         this.price = price;
-        this.name = firm;
+        this.name = name;
     }
 
+    @Override
     public double getPrice() {
         return price;
     }
 
+    @Override
     public String getName() {
         return name;
     }

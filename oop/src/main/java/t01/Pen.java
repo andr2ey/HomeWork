@@ -59,8 +59,8 @@ public class Pen {
             return false;
         }
         Pen otherPen = (Pen)other;
-        return (length == otherPen.length) &&
-                (price == otherPen.price) &&
+        return Double.compare(length, otherPen.length) == 0 &&
+                Double.compare(price, otherPen.price) == 0 &&
                 (automatic == otherPen.automatic) &&
                 (inkColor == otherPen.inkColor) &&
                 (firm == null ? otherPen.firm == null : firm.equals(otherPen.firm));
@@ -84,14 +84,5 @@ public class Pen {
                 "(price=" + price + ", length=" + length +
                 ") made by " + firm + " with a " +
                 inkColor.toString().toLowerCase() + " ink";
-    }
-
-    public static void main(String[] args) {
-        Pen pen1 = new Pen(10.1, 22);
-        System.out.println(pen1);
-
-        Pen pen4 = new Pen(10.2, 22);
-        System.out.println(pen1.equals(pen4));
-        System.out.println(pen1.getLength() == pen4.getLength());
     }
 }

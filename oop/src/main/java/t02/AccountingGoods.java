@@ -20,12 +20,13 @@ public class AccountingGoods {
     public void printReport() {
         int counter = 1;
         Formatter f = new Formatter(System.out);
-        f.format("Total %d goods cost %2.0f $\n", accounting.itemsNumber(), accounting.totalCost());
+        f.format("%s #%d\n", accounting.getName(), accounting.getId());
         for (Map.Entry<Good, Integer> entry : accounting.goods().entrySet()) {
             Good good = entry.getKey();
             int number = entry.getValue();
-            f.format("%2d. %-8.10s\t%d goods cost %2.0f $\n", counter++, good.getName(), number, good.getPrice()*number);
+            f.format("%2d. %-8.10s\t%d goods cost %.2f $\n", counter++, good.getName(), number, good.getPrice()*number);
         }
+        f.format("%14.5s\t%d goods cost %.2f $\n", "Total", accounting.itemsNumber(), accounting.totalCost());
     }
 
     public static void main(String[] args) {
@@ -33,9 +34,15 @@ public class AccountingGoods {
         workplace.addGood(new OfficeGood(12, "Pen"));
         workplace.addGood(new OfficeGood(12, "Pen"));
         workplace.addGood(new OfficeGood(15, "Pencil"));
-        workplace.addGood(new OfficeGood(15, "Pencilssssssss"));
+        workplace.addGood(new OfficeGood(15.34, "Ruler"));
+        workplace.addGood(new OfficeGood(123.34, "Ruler"));
+        workplace.addGood(new OfficeGood(123.34, "Paper"));
+
         Accountable<Good> wp = workplace;
         AccountingGoods service = new AccountingGoods(wp);
+        service.printReport();
+
+        workplace.deleteGood(new OfficeGood(123.34, "Paper"));
         service.printReport();
     }
 }

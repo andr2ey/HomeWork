@@ -30,6 +30,16 @@ public class Workplace implements Accountable<Good>{
     }
 
     public void deleteGood(Good good) {
+        if (goods.containsKey(good)) {
+            int number = goods.get(good);
+            if (number > 1)
+                goods.put(good, --number);
+            else
+                goods.remove(good);
+        }
+        else {
+            goods.put(good, 1);
+        }
         goods.remove(good);
     }
 
@@ -37,6 +47,16 @@ public class Workplace implements Accountable<Good>{
         goods.clear();
     }
 
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return Workplace.class.getSimpleName();
+    }
 
     @Override
     public double totalCost() {
