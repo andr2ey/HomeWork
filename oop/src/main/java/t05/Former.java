@@ -36,5 +36,7 @@ public class Former {
 
         System.out.println(former.getMarks(andrey));
         System.out.println(former.getMarks(dima));
+
+        System.out.println((int)(Math.random()*5));
     }
 }

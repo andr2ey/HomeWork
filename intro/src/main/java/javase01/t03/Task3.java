@@ -1,48 +1,55 @@
 package javase01.t03;
 
 
+import java.util.Collections;
 import java.util.Formatter;
 import java.util.Map;
 import java.util.TreeMap;
+import static java.lang.Math.*;
 
 public class Task3 {
 
-    public static String tableOfArgumentValue(Map<Double, Double> mapArgValue) {
-        if (mapArgValue.isEmpty()) {
+    public static String table(Map<Double, Double> mapArgValue) {
+        if (mapArgValue.isEmpty())
             return "";
-        }
         StringBuilder sb = new StringBuilder();
         Formatter f = new Formatter(sb);
         f.format("%10s %10s\n", "argument", "value");
-        for (Map.Entry entry : mapArgValue.entrySet()) {
-            f.format("%10.2f %10.2e", entry.getKey(), entry.getValue());
-            f.format("\n");
-        }
+        for (Map.Entry entry : mapArgValue.entrySet())
+            f.format("%10.2f %10.2e\n", entry.getKey(), entry.getValue());
         return sb.toString();
     }
 
     public static Map<Double, Double> getMapArgValue(double start, double finish, double step) {
-        if (start > finish || step <= 0) {
-            throw new RangeException();
-        }
+        if (start > finish || step <= 0)
+            return Collections.emptyMap();
         Map<Double, Double> mapArgVal = new TreeMap<>();
-        for (double i = start; i < finish; i += step) {
+        for (double i = start; i < finish; i += step)
             mapArgVal.put(i, function(i));
-        }
         mapArgVal.put(finish, function(finish));
-        return mapArgVal;
+        return Collections.unmodifiableMap(mapArgVal);
     }
 
     public static double function(double x) {
-        //checks is x specific?
-        double value = Math.cos(2*x);
-        if (value < 6.1232339957367E-16 && value > -1.83697019872103E-16) {
-            return Double.POSITIVE_INFINITY;
-        }
-        return Math.tan(2*x) - 3;
+        //checks x is specific when tan(2x) == infinity
+        if ( (x % (PI/2)) != 0 && (x % (PI/4)) == 0)
+            if ( sin(2*x) < 0 )
+                return Double.NEGATIVE_INFINITY;
+            else
+                return Double.POSITIVE_INFINITY;
+        return tan(2*x) - 3;
     }
 
     public static void main(String[] args) {
-        System.out.println(tableOfArgumentValue(getMapArgValue(3*Math.PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(1*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(2*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(3*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(4*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(5*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(6*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(7*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(8*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(9*PI*0.25, 10, 1)));
+        System.out.println(table(getMapArgValue(10*PI*0.25, 10, 1)));
     }
 }

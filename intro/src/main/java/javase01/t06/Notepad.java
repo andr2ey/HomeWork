@@ -5,7 +5,7 @@ import java.util.Formatter;
 
 /**
  * The Notepad allow to add, edit and delete notes by number and
- * display all notes in console. This class implements a growable
+ * display all notes in console. This class implements a expandable
  * array of notes.
  */
 public class Notepad {
@@ -18,11 +18,17 @@ public class Notepad {
      */
     private int carriage = 0;
 
-    /**
-     * Constructs an notepad with array as storage.
-     */
+
+    public Notepad(int size) {
+        notes = new Note[size];
+    }
+
     public Notepad() {
-        notes = new Note[10];
+        this(10);
+    }
+
+    public int size() {
+        return notes.length;
     }
 
     /**
@@ -30,12 +36,32 @@ public class Notepad {
      *
      * If notes are filled then widens notes. After that shifts carriage.
      *
-     * @param text text to be appended to the notes
+     * @param text to be appended to the notes
+     * @param number of adding note
      */
-    public void addNote(String text) {
-        if (carriage == notes.length) {
-            newNotesStorage();
+    public void add(int number, String text) {
+        if (number < 1 || number > carriage)
+            return;
+        if (carriage == notes.length)
+            widenStorage();
+        for (int i = carriage; i >= number; i--) {
+            notes[i] = notes[i - 1];
+            notes[i].setNumber(i + 1);
         }
+        edit(number, text);
+        carriage++;
+    }
+
+    /**
+     * Inserts the text to the determined position by number.
+     *
+     * If notes are filled then widens notes. After that shifts carriage.
+     *
+     * @param text to be appended to the notes
+     */
+    public void add(String text) {
+        if (carriage == notes.length)
+            widenStorage();
         Note newNote = new Note(text, carriage + 1);
         notes[carriage] = newNote;
         carriage++;
@@ -44,56 +70,62 @@ public class Notepad {
     /**
      * Deletes text with number from notes.
      *
-     * @param number number of text to be deleted from the notes
+     * @param number of text to be deleted from the notepad
      */
-    public void deleteNote(int number) {
-        if (number < 1 || number > carriage) {
+    public void delete(int number) {
+        if (number < 1 || number > carriage)
             return;
-        }
-        reorganizeNotes(number - 1);
-        carriage = carriage == 0 ? carriage : --carriage;
+        reorganize(number);
     }
 
     /**
-     * Inserts text at the determined by number position in notes.
+     * Inserts text at the determined position by number.
      *
-     * @param text text for exchange
-     * @param number number of editable note
+     * @param text for exchange
+     * @param number of editable note
      */
-    public void editNote(int number, String text) {
-        if (number < 1 || number > carriage) {
+    public void edit(int number, String text) {
+        if (number < 1 || number > carriage)
             return;
-        }
         notes[number - 1] = new Note(text, number);
     }
 
     /**
      * Displays to console all notes.
      */
-    public void watchNotes() {
+    public void display() {
         Formatter f = new Formatter(System.out);
-        for (int i = 0; i < carriage; i++) {
+        for (int i = 0; i < carriage; i++)
             f.format("%d# %s\n", notes[i].getNumber(), notes[i].getText());
-        }
         f.format("\n");
+    }
+
+    /**
+     * Reduces array's length to current amount of notes.
+     */
+    public void trimToSize() {
+        Note[] tmp = notes;
+        notes = new Note[carriage];
+        System.arraycopy(tmp, 0, notes, 0, carriage);
     }
 
     /**
      * Starting from number shifts all notes in the left on one position.
      *
-     * @param number number of deleted position
+     * @param number of deleted position of note
      */
-    private void reorganizeNotes(int number) {
-        for (int i = number + 1; i < carriage; i++) {
+    private void reorganize(int number) {
+        for (int i = number; i < carriage; i++) {
             notes[i - 1] = notes[i];
             notes[i - 1].setNumber(i);
         }
+        notes[--carriage] = null;
     }
 
     /**
      * Widens notes in one and half.
      */
-    private void newNotesStorage() {
+    private void widenStorage() {
         Note[] tmp = notes;
         notes = new Note[(int)(tmp.length*1.5)];
         System.arraycopy(tmp, 0, notes, 0, tmp.length);
@@ -103,56 +135,77 @@ public class Notepad {
         Notepad notepad = new Notepad();
 
         System.out.println("ADD 3 notes");
-        notepad.addNote("note 1");
-        notepad.addNote("note 2");
-        notepad.addNote("note 3");
-        notepad.watchNotes();
+        notepad.add("note 1");
+        notepad.add("note 2");
+        notepad.add("note 3");
+        notepad.display();
 
         System.out.println("DELETE 2#");
-        notepad.deleteNote(2);
-        notepad.watchNotes();
+        notepad.delete(2);
+        notepad.display();
 
         System.out.println("EDIT 2#");
-        notepad.editNote(2, "note 2");
-        notepad.watchNotes();
+        notepad.edit(2, "note 2");
+        notepad.display();
 
         System.out.println("ADD until 12 notes");
-        notepad.addNote("note 3");
-        notepad.addNote("note 4");
-        notepad.addNote("note 5");
-        notepad.addNote("note 6");
-        notepad.addNote("note 7");
-        notepad.addNote("note 8");
-        notepad.addNote("note 9");
-        notepad.addNote("note 10");
-        notepad.addNote("note 11");
-        notepad.addNote("note 12");
-        notepad.watchNotes();
+        notepad.add("note 3");
+        notepad.add("note 4");
+        notepad.add("note 5");
+        notepad.add("note 6");
+        notepad.add("note 7");
+        notepad.add("note 8");
+        notepad.add("note 9");
+        notepad.add("note 10");
+        notepad.add("note 11");
+        notepad.add("note 12");
+        notepad.display();
 
-        System.out.println("EDIT -1#");
-        notepad.editNote(-1, "note -1");
-        notepad.watchNotes();
+        System.out.println("EDIT 0#");
+        notepad.edit(0, "note -1");
+        notepad.display();
 
         System.out.println("EDIT 13#");
-        notepad.editNote(13, "note 13");
-        notepad.watchNotes();
+        notepad.edit(13, "note 13");
+        notepad.display();
 
-        System.out.println("DELETE -1#");
-        notepad.deleteNote(-1);
-        notepad.watchNotes();
+        System.out.println("DELETE 0#");
+        notepad.delete(0);
+        notepad.display();
 
         System.out.println("DELETE 13#");
-        notepad.deleteNote(13);
-        notepad.watchNotes();
+        notepad.delete(13);
+        notepad.display();
 
         System.out.println("DELETE 1# 13 times#");
         for (int i = 0; i < 13; i++) {
-            notepad.deleteNote(1);
+            notepad.delete(1);
         }
-        notepad.watchNotes();
+        notepad.display();
 
-        System.out.println("ADD 1 note");
-        notepad.addNote("note 1");
-        notepad.watchNotes();
+        System.out.println("ADD 5 note");
+        notepad.add("note 1");
+        notepad.add("note 2");
+        notepad.add("note 3");
+        notepad.add("note 4");
+        notepad.add("note 5");
+        notepad.display();
+
+        System.out.println("ADD note to 2#");
+        notepad.add(2, "note 2 new");
+        notepad.display();
+
+        System.out.println("ADD note to 1#");
+        notepad.add(1, "note 1 new");
+        notepad.display();
+
+        System.out.println("ADD note to 7#");
+        notepad.add(7, "note 7 new");
+        notepad.display();
+
+        System.out.println("Verifies trimToSize");
+        System.out.println("size before: " + notepad.size());
+        notepad.trimToSize();
+        System.out.println("size after: " + notepad.size());
     }
 }

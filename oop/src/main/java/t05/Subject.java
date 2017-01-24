@@ -15,7 +15,7 @@ public enum Subject {
         }
 
         public String getMark(Student student) {
-            return String.valueOf(students.get(student));
+            return String.valueOf(String.format("%.2f", students.get(student)));
         }
 
         public void addStudent(Student student) {
@@ -30,7 +30,7 @@ public enum Subject {
         }
 
         public String getMark(Student student) {
-            return String.valueOf(students.get(student));
+            return String.valueOf(String.format("%.2f", students.get(student)));
         }
 
         public void addStudent(Student student) {
@@ -45,7 +45,7 @@ public enum Subject {
         }
 
         public String getMark(Student student) {
-            return String.valueOf(students.get(student));
+            return String.valueOf(String.format("%.2f", students.get(student)));
         }
 
         public void addStudent(Student student) {

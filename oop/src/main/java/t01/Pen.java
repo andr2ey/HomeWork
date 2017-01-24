@@ -11,9 +11,6 @@ public class Pen {
     private Color inkColor;
     private String firm;
 
-    /**
-     *  Create default mechanic pen made by Pilot with a blue ink.
-     * */
     public Pen(double length, double price) {
         this.length = length;
         this.price = price;

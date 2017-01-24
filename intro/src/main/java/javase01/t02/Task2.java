@@ -5,53 +5,38 @@ import java.util.Formatter;
 
 public class Task2 {
 
-    //finds the least element number of sequence which satisfy by condition a(n) < value;
-    public static int searchOfLeastNumber(double value) {
-        //минимальное условие подобрано, исходя из максимального результата выражения Math.pow(n + 1, 2),
-        //при котором точность не теряется, т. е. для double это Double.MAX_VALUE/1E293 (15 значущих цифр)
-        final double MIN_CONDITION = 5.562684646268004E-16;
-        if (value < MIN_CONDITION) {
-            throw new AccurateException();
-        }
-        if (value > 0.25) {
-            return 1;
-        }
-        double a;
+    private static final int AMOUNT_IN_LINE = 10;
+
+    //finds the least element number of sequence which satisfies by condition a(n) < e;
+    public static int leastNumber(double e) {
+        if (e <= 0)
+            throw new IllegalArgumentException("e must be > 0");
         int n = 1;
-        do {
-            n++;
-            a = 1 / Math.pow(n + 1, 2);
-        } while (a >= value);
+        if (e > 0.25)
+            return n;
+        for (double a = 1; a >= e;)
+            a = 1 / Math.pow(++n + 1, 2);
         return n;
     }
 
-    //writes results in output stream
-    public static void getResultingString(double value, PrintStream ps) {
-        int n = searchOfLeastNumber(value);
-        if (n < 1) {
-            return;
-        }
+    public static void typeResult(double e, PrintStream ps) {
         Formatter f = new Formatter(ps);
-        f.format("Initial value is %.2e. Result is %d.\n", value, n);
-        //amount numbers in a line
-        int k = 10;
+        int n = leastNumber(e);
+        f.format("e = %.2g. Result is %d.\n", e, n);
+        int k = AMOUNT_IN_LINE;
         //output as table
-        for (int i = 1; i < n + 1; i += 10) {
-            //for output last line
-            if (n - i < 10) {
-                k = n - i + 1;
-            }
-            for (int j = i; j < i + k; j++) {
+        for (int i = 1; i < n; i += k) {
+            for (int j = i; j < i + k && j <= n; j++)
                 f.format(" %7d", j);
-            }
             f.format("\n");
         }
         f.format("\n");
     }
 
     public static void main(String[] args) {
-        getResultingString(0.26, System.out);
-        getResultingString(0.004, System.out);
-        getResultingString(0.0004, System.out);
+        typeResult(0.26, System.out);
+        typeResult(0.25, System.out);
+        typeResult(0.004, System.out);
+        typeResult(0.000004, System.out);
     }
 }
