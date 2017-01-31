@@ -7,28 +7,27 @@ import t03.goods.office.Pencil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created on 19.01.2017.
  */
-public class BeginnerSet {
-    private List<OfficeGood> list = new ArrayList<>();
+public class BeginnerKit {
+    private List<OfficeGood> kit = new ArrayList<>();
 
-    public BeginnerSet(OfficeGood... officeGoods) {
-        list.addAll(Arrays.asList(officeGoods));
+    public BeginnerKit(OfficeGood... officeGoods) {
+        kit.addAll(Arrays.asList(officeGoods));
     }
 
-    public List<OfficeGood> getList() {
-        return list;
+    public List<OfficeGood> getKit() {
+        return kit;
     }
 
     @Override
     public String toString() {
-        if (list.isEmpty()) return "empty set";
+        if (kit.isEmpty()) return "empty kit";
         StringBuilder sb = new StringBuilder();
-        for (OfficeGood good : list) {
+        for (OfficeGood good : kit) {
             sb.append(good).append("\n");
         }
         return sb.toString();
@@ -41,7 +40,7 @@ public class BeginnerSet {
                 new Pencil(15.7),
                 new Pencil(7)};
 
-        BeginnerSet set = new BeginnerSet(goods);
+        BeginnerKit set = new BeginnerKit(goods);
         System.out.println(set);
     }
 

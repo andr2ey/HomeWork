@@ -5,12 +5,18 @@ package t02;
  */
 public class Worker {
     private Workplace workplace;
+    private String name;
 
-    public Worker(Workplace workplace) {
+    public Worker(String name, Workplace workplace) {
+        this.name = name;
         this.workplace = workplace;
     }
 
     public Workplace getWorkplace() {
         return workplace;
+    }
+
+    public String getName() {
+        return name;
     }
 }

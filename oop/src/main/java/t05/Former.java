@@ -1,42 +1,51 @@
 package t05;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created on 19.01.2017.
  */
 public class Former {
 
-    private Subject[] subjects = Subject.values();
+    private Discipline[] disciplines = Discipline.values();
 
-    public String getMarks(Student student) {
+    public void add(Student student, Discipline discipline) {
+        discipline.addStudent(student, Math.random()*5);
+    }
+
+    public void addEverywhere(Student student) {
+        for (Discipline discipline : disciplines)
+            add(student, discipline);
+    }
+
+    public void delete(Student student, Discipline discipline) {
+        discipline.deleteStudent(student);
+    }
+
+    public String marks(Student student) {
         StringBuilder sb = new StringBuilder();
-        sb.append(student).append(": ");
-        for (Subject subject : subjects) {
-            if (subject.exist(student))
-                sb.append(subject).append("_").append(subject.getMark(student)).append(" ");
+        sb.append(student).append(": ").append("\n");
+        for (Discipline discipline : disciplines) {
+            if (discipline.exist(student)) {
+                sb.append(discipline).
+                        append("_").
+                        append(discipline.getMark(student)).
+                        append(" ");
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }
 
     public static void main(String[] args) {
-        Former former = new Former();
-
         Student andrey = new Student("Andrey");
         Student dima = new Student("Dima");
 
-        for (Subject subject : former.subjects) {
-            subject.addStudent(dima);
-        }
+        Former former = new Former();
+        former.addEverywhere(dima);
 
-        Subject.Chemistry.addStudent(andrey);
-        Subject.Mathematics.addStudent(andrey);
-        Subject.English.addStudent(andrey);
+        former.add(andrey, Discipline.Mathematics);
+        former.add(andrey, Discipline.English);
 
-        System.out.println(former.getMarks(andrey));
-        System.out.println(former.getMarks(dima));
-
-        System.out.println((int)(Math.random()*5));
+        System.out.println(former.marks(andrey));
+        System.out.println(former.marks(dima));
     }
 }

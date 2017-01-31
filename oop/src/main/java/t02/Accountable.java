@@ -9,6 +9,6 @@ public interface Accountable<G> {
     int getId();
     String getName();
     double totalCost();
-    int itemsNumber();
+    int overallAmount();
     Map<G, Integer> goods();
 }

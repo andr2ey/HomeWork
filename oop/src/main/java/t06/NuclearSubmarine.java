@@ -24,8 +24,5 @@ public class NuclearSubmarine {
     public static void main(String[] args) {
         NuclearSubmarine submarine = new NuclearSubmarine();
         submarine.startEngine();
-
-        NuclearSubmarine.Engine engine = submarine.new Engine();
-        engine.start();
     }
 }

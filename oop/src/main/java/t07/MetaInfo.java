@@ -1,8 +1,6 @@
 package t07;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Created on 20.01.2017.
@@ -10,6 +8,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Documented
 public @interface MetaInfo {
-    String author();
+    String author() default "unknown";
     String lastModified();
 }
