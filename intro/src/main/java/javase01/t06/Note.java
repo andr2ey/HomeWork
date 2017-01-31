@@ -6,7 +6,6 @@ package javase01.t06;
 class Note {
 
     private String text;
-
     private int number;
 
     Note(String text, int number) {
