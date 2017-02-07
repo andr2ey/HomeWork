@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
  * Created on 05.02.2017.
  */
 public class Questions {
-    private static int QUESTIONS_NUMBER = 2;
+    private static final int QUESTIONS_NUMBER = 2;
     private static ResourceBundle resourceBundle;
 
     public static Map<Integer, Pair<String, String>> questions(Language language) {

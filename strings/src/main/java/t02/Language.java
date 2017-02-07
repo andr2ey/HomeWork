@@ -20,13 +20,11 @@ public enum Language {
     }
 
     public static Language getLanguage(String language) {
-        switch (language) {
-            case "en":
-                return ENGLISH;
-            case "ru":
-                return RUSSIAN;
-            default:
-                throw new IllegalArgumentException();
-        }
+        if (language.equals("en"))
+            return ENGLISH;
+        else if (language.equals("ru"))
+            return RUSSIAN;
+        else
+            throw new IllegalArgumentException();
     }
 }

@@ -1,7 +1,8 @@
 package t02;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Locale;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -15,62 +16,70 @@ public class QuestionApp {
 
     public QuestionApp(Language language) {
         this.currentLang = language;
-        this.utilBundle = ResourceBundle.getBundle("util", language.getLocale());
-        this.questions = Questions.questions(language);
+        this.utilBundle = ResourceBundle.getBundle("util", currentLang.getLocale());
+        this.questions = Questions.questions(currentLang);
+        System.out.println(allQuestions());
     }
 
-    public String answer(int number) {
-        return questions.get(number).getA();
+    public Language getCurrentLang() {
+        return currentLang;
     }
 
-    public String allQuestions() {
+    public ResourceBundle getUtilBundle() {
+        return utilBundle;
+    }
+
+    public void answer(int number) {
+        if (number > questions.size() || number < 1) {
+            System.out.println(utilBundle.getString("util.incorrect.input"));
+            return;
+        }
+        System.out.println(questions.get(number).getA());
+    }
+
+    public void process(String string) {
+        if (string.equals("en"))
+            changeLanguage(string);
+        else if(string.equals("ru"))
+            changeLanguage(string);
+        else
+            System.out.println(utilBundle.getString("util.incorrect.input"));
+    }
+
+    private void changeLanguage(String language) {
+        Language changedLang = Language.getLanguage(language);
+        if (changedLang == currentLang)
+            return;
+        currentLang = changedLang;
+        questions = Questions.questions(currentLang);
+        utilBundle = ResourceBundle.getBundle("util", currentLang.getLocale());
+        System.out.println(allQuestions());
+    }
+
+    private String allQuestions() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<Integer, Pair<String, String>> entry : questions.entrySet()) {
             sb.append(entry.getKey()).append(". ").append(entry.getValue().getQ()).append("\n");
         }
+        sb.append(utilBundle.getString("util.introduce"));
         return sb.toString();
     }
 
-    public void changeLanguage(String language) {
-        Language lang = Language.getLanguage(language);
-        questions = Questions.questions(lang);
-        utilBundle = ResourceBundle.getBundle("resources/util", lang.getLocale());
-    }
-
-
     public static void main(String[] args) {
         QuestionApp app = new QuestionApp(Language.ENGLISH);
-        ConsoleHelper.write(app.allQuestions());
-        exit:
-        while (true) {
-            ConsoleHelper.write("Введите номер вопроса, чтобы получить ответ.\n" +
-                    "Для изменение языка наберите en - Английский, ru - Русский.\n" +
-                    "Введите exit, если желаете выйти из программы.");
-            String string = null;
-            try {
-                string = ConsoleHelper.readStr();
-                System.out.println(string);
-                int number = Integer.parseInt(string);
-            }
-            catch (IOException e) {
-                ConsoleHelper.write("Ошибка ввода.");
-            }
-            catch (NumberFormatException e) {
-                switch (string) {
-                    case "en":
-                        app.changeLanguage(string);
-                        ConsoleHelper.write(app.allQuestions());
-                        break;
-                    case "ru":
-                        app.changeLanguage("ru");
-                        ConsoleHelper.write(app.allQuestions());
-                        break;
-                    case "exit":
-                        break exit;
-                    default:
-                        ConsoleHelper.write("Некоректный ввод");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            String string = reader.readLine();
+            while (!string.equalsIgnoreCase("exit")) {
+                try {
+                    app.answer(Integer.parseInt(string));
+                } catch (NumberFormatException e) {
+                    app.process(string);
                 }
+                string = reader.readLine();
             }
+        } catch (IOException e) {
+            throw new RuntimeException("IOException");
         }
     }
 }
+
