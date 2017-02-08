@@ -68,5 +68,26 @@ public class CheckingLinks {
                 new File("c://Users//user//IdeaProjects//HomeWork//strings//src//main//resources//t03.html");
         CheckingLinks checking = new CheckingLinks(file, Charset.forName("utf-8"));
         System.out.println(checking.isSequence());
+
+        String html = "(<(/?[^>]+)>)";
+        String pattern2 = ".*?(<body>)((.*[\\s]*)*)(</body>).*?";
+        // (\<(/?[^>]+)>)
+        // (\<(\/?[^>]+)>)
+        try(Scanner scanner = new Scanner(new FileInputStream(file))) {
+            scanner.useDelimiter("YYYYYYY");
+            String text = new String(scanner.next().getBytes(), Charset.forName("utf-8"));
+            Matcher matcher = Pattern.compile(pattern2).matcher(text);
+            System.out.println(matcher.find());
+            System.out.println(matcher.start());
+            System.out.println(matcher.end());
+            String string = matcher.group(2);
+
+            Matcher matcherNEW = Pattern.compile(html).matcher(string);
+            String deletedHTML = matcherNEW.replaceAll("");
+            System.out.println(deletedHTML);
+//            String result = matcher.replaceAll("");
+//            System.out.println(result);
+
+        }
     }
 }
