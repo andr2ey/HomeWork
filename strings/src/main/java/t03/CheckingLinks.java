@@ -66,27 +66,52 @@ public class CheckingLinks {
     public static void main(String[] args) throws FileNotFoundException {
         File file =
                 new File("c://Users//user//IdeaProjects//HomeWork//strings//src//main//resources//t03.html");
-        CheckingLinks checking = new CheckingLinks(file, Charset.forName("utf-8"));
-        System.out.println(checking.isSequence());
 
-        String html = "(<(/?[^>]+)>)";
-        String pattern2 = ".*?(<body>)((.*[\\s]*)*)(</body>).*?";
-        // (\<(/?[^>]+)>)
-        // (\<(\/?[^>]+)>)
+        String html = "(<(/?[^>]+)>)|(&nbsp[;]?)";
+        String textPattern = ".*<body>((.*[\\s]*)*)</body>.*";
+        String sentencePattern = "([А-Я](.+?)([^рР][^и][^сА-Я])[.?!])";
+        String linksPattern = "(\\([рР]ис\\. \\d+[,и \\d]*\\))|(рисунк[ае] \\d+)";
+
+
         try(Scanner scanner = new Scanner(new FileInputStream(file))) {
-            scanner.useDelimiter("YYYYYYY");
+            scanner.useDelimiter("AaA");//for full text
             String text = new String(scanner.next().getBytes(), Charset.forName("utf-8"));
-            Matcher matcher = Pattern.compile(pattern2).matcher(text);
-            System.out.println(matcher.find());
-            System.out.println(matcher.start());
-            System.out.println(matcher.end());
-            String string = matcher.group(2);
 
-            Matcher matcherNEW = Pattern.compile(html).matcher(string);
-            String deletedHTML = matcherNEW.replaceAll("");
-            System.out.println(deletedHTML);
-//            String result = matcher.replaceAll("");
-//            System.out.println(result);
+            Matcher textMatcher = Pattern.compile(textPattern).matcher(text);
+            //noinspection ResultOfMethodCallIgnored
+            textMatcher.find();
+            String textWithTags = textMatcher.group(1);
+
+            Matcher tagsMatcher = Pattern.compile(html).matcher(textWithTags);
+            String textWithoutTags = tagsMatcher.replaceAll("");
+
+            Matcher sentenceMatcher = Pattern.compile(sentencePattern).matcher(textWithoutTags);
+            for (int i = 1; sentenceMatcher.find(); i++) {
+                System.out.println(i + "# " + sentenceMatcher.group());
+            }
+
+            System.out.println("--------------------------------------------------------------------");
+            System.out.println("SEARCH of SENTENCES WITH LINKS");
+            System.out.println("--------------------------------------------------------------------");
+
+            sentenceMatcher.reset();
+            boolean isConsistent = true;
+            int counterLinks = 0;
+            for (int i = 1; sentenceMatcher.find(); i++) {
+                Matcher linksMatcher = Pattern.compile(linksPattern).matcher(sentenceMatcher.group());
+                while (linksMatcher.find()) {
+                    System.out.println(i + "# " + sentenceMatcher.group());
+                    Matcher numberMatcher = Pattern.compile("\\d+").matcher(linksMatcher.group());
+                    while (numberMatcher.find()) {
+                        int currentReference = Integer.parseInt(numberMatcher.group());
+                        if (currentReference > counterLinks + 1)
+                            isConsistent = false;
+                        else if (currentReference == counterLinks + 1)
+                            counterLinks++;
+                    }
+                }
+            }
+            System.out.println("Are links consistent: " + isConsistent);
 
         }
     }
