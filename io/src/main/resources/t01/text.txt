@@ -1,79 +1,45 @@
-В настоящее время в языке JAVA определено 50 (пятьдесят!) ключевых слов. Раньше их было немного больше, но в текущей спецификации JAVA указаны 50 слов, которые приведены ниже.
+package t01;
 
-Постарался их разбить по группам, каждое объяснять не буду, так большая часть должна быть ясна.
+import java.io.*;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-Примитивы
+/**
+ * Created on 12.02.2017.
+ */
+public class Highlighter {
 
-1. byte
-2. short int
-3. int
-4. long
-5. char
-6. float
-7. double
-8. boolean
+    private static String[] keyWords = {};
 
-Циклы и ветвления
+    public Highlighter() {
+    }
 
-9. if
-10. else
-11. switch
-12. case
-13. default
-14. while
-15. do
-16. break
-17. continue
-18. for
+    public void highlight(InputStream source, OutputStream target) {
+        try(Scanner scanner = new Scanner(source);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(target))) {
+            while (scanner.hasNextLine()) {
+                String text = scanner.nextLine();
+                for (String keyWord : keyWords) {
+                    Pattern pattern = Pattern.compile("(\\W|^)(" + keyWord + ")(?!\\w)");
+                    Matcher matcher = pattern.matcher(text);
+                    while (matcher.find()) {
+                        writer.println(matcher.group(2));
+                    }
+                }
+            }
+        }
+    }
 
-Исключения
-
-19. try
-20. catch
-21. finally
-22. throw
-23. throws
-
-Области видимости
-
-24. private
-25. protected
-26. public
-
-Объявление \ Импорт
-
-27. import
-28. package
-29. class
-30. interface
-31. extends
-32. implements
-33. static
-34. final
-35. void
-36. abstract
-37. native / / сигнализирует о том, что метод реализован в платформо-зависимом коде, часто на языке С. Такой модификатор имеет, например, метод hashcode в Object.
-
-Создание \ Возврат \ Вызов
-
-38. new
-39. return
-40. this
-41. super
-
-Многопоточность
-42. synchronized
-43. volatile
-
-Ключевые слова, которые есть (зарезервированы), но не используются в языке
-
-44. const
-45. goto
-
-Ключевые слова, которые не вошли ни в одну из групп
-
-46. instanceof
-47. enum // перечисление
-48. assert // проверка данных
-49. transient // применяется к полям класса и означает, что данное поле не входит в персистентное состояние класса. Т.е. при сериализации данное поле не будет записываться. И, соответственно, при де-сериализации оно не будет восстанавливаться из потока байтов.
-50. strictfp // все кроме этого слова, я когда-нибудь да слышал, но вот это услышать мне пришлось в первый раз (его и слово const не смог назвать никто, к слову сказать). Модифицируя класс, метод, интерфейс с ключевым словом strictfp, вы гарантируете, что вычисления с плавающей точкой будут выполняться как в старых версиях. Это делается для гарантирования неизменности результатов операций с плавающей точкой на всех платформах.
+    public static void main(String[] args) {
+        Highlighter highlighter = new Highlighter();
+        try (FileInputStream fis = new FileInputStream("c://Users//user//IdeaProjects//HomeWork//io//src//main//resources//t01//text.txt");
+             FileOutputStream fos = new FileOutputStream("c://Users//user//IdeaProjects//HomeWork//io//src//main//resources//t01//key words.txt")) {
+            highlighter.highlight(fis, fos);
+        } catch (FileNotFoundException e) {
+            System.out.print("FileNotFoundException");
+        } catch (IOException e) {
+            System.out.print("IOException in main");
+        }
+    }
+}
