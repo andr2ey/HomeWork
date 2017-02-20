@@ -23,6 +23,7 @@ public class ViewCommand implements Command {
 
     @Override
     public void execute() {
+        ConsoleHelper.write("Current path: " + file.getAbsolutePath());
         //noinspection ConstantConditions
         for (File f : file.listFiles()) {
             if (f.canRead()) {

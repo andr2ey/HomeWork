@@ -3,6 +3,7 @@ package t01;
 
 import t01.command.Executor;
 import t01.command.Operation;
+import t01.exception.InvalidOperationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,22 +15,17 @@ public class FileManager {
 
 
     public static void main(String[] args) throws IOException {
-        ConsoleHelper.write("Enter: \"view (path to directory)\"\n" +
-                "       \"viewAfter (name of current directory\'s folder)\"\n" +
-                "       \"viewBefore\"\n" +
-                "       \"help\"\n" +
-                "       \"exit\"\n");
+        ConsoleHelper.writeHelpInfo();
         String command = ConsoleHelper.read();
-        Executor executor = new Executor();
+        Executor executor = Executor.getInstance();
 
         while (!command.equalsIgnoreCase("exit")) {
-
-            Operation operation = Operation.choose(command);
-            File file = operation.getFile();
-            ConsoleHelper.write("Current path: " + file.getAbsolutePath());
-
-            executor.execute(operation, file);
-
+            try {
+                Operation operation = Operation.choose(command);
+                executor.execute(operation, operation.getFile());
+            } catch (InvalidOperationException e) {
+                ConsoleHelper.write(e.getMessage());
+            }
             command = ConsoleHelper.read();
         }
     }

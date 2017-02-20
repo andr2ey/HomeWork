@@ -3,8 +3,8 @@ package t01.exception;
 /**
  * Created on 19.02.2017.
  */
-public class IncorrectOperationException extends Exception {
-    public IncorrectOperationException(String message) {
+public class InvalidOperationException extends Exception {
+    public InvalidOperationException(String message) {
         super(message);
     }
 
